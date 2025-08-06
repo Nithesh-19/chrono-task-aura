@@ -1,12 +1,55 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { SplashScreen } from "@/components/SplashScreen";
+import { AuthScreen } from "@/components/AuthScreen";
+import { TaskList } from "@/components/TaskList";
+import { SettingsScreen } from "@/components/SettingsScreen";
+
+type AppState = 'splash' | 'auth' | 'tasks' | 'settings';
 
 const Index = () => {
+  const [currentScreen, setCurrentScreen] = useState<AppState>('splash');
+
+  const handleSplashContinue = () => {
+    setCurrentScreen('auth');
+  };
+
+  const handleAuthBack = () => {
+    setCurrentScreen('splash');
+  };
+
+  const handleLogin = () => {
+    setCurrentScreen('tasks');
+  };
+
+  const handleShowSettings = () => {
+    setCurrentScreen('settings');
+  };
+
+  const handleSettingsBack = () => {
+    setCurrentScreen('tasks');
+  };
+
+  const handleLogout = () => {
+    setCurrentScreen('splash');
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      {currentScreen === 'splash' && (
+        <SplashScreen onContinue={handleSplashContinue} />
+      )}
+      
+      {currentScreen === 'auth' && (
+        <AuthScreen onBack={handleAuthBack} onLogin={handleLogin} />
+      )}
+      
+      {currentScreen === 'tasks' && (
+        <TaskList onSettings={handleShowSettings} />
+      )}
+      
+      {currentScreen === 'settings' && (
+        <SettingsScreen onBack={handleSettingsBack} onLogout={handleLogout} />
+      )}
     </div>
   );
 };
